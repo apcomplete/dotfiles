@@ -3,3 +3,6 @@
 *~
 *.swp
 *.rbc
+.bundle/binstubs
+*esproj*
+vendor/ruby
