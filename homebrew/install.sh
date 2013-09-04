@@ -14,6 +14,7 @@ then
 fi
 
 # Install homebrew packages
-brew install grc coreutils spark
+brew install grc coreutils git chromedriver imagemagick python
+brew install rbenv ruby-build
 
 exit 0
