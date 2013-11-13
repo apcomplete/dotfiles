@@ -12,6 +12,7 @@
         st = status
         co = checkout
         count   = !git shortlog -sn
+        assumed = !git ls-files -v | grep ^h | cut -c 3-
 [color]
         interactive = auto
         ui = true
