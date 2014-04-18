@@ -1,4 +1,4 @@
-BIN_PATH=./vendor/ruby/bin:./.bin:./bin
+BIN_PATH=./.bin:./bin
 
 RUBY_PATH=vendor/ruby/bin:$HOME/.rbenv/shims:$HOME/.rbenv/bin
 
