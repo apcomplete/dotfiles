@@ -6,3 +6,5 @@
 .bundle/binstubs
 *esproj*
 vendor/ruby
+*.dump
+.sass-cache
