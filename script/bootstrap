@@ -125,6 +125,7 @@ install_dotfiles
 
 # If we are on a mac, lets install and setup homebrew
 if [ "$(uname -s)" == "Darwin" ]
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 then
   info "installing dependencies"
   if . bin/dot > /tmp/dotfiles-dot 2>&1
