@@ -7,4 +7,5 @@
 *esproj*
 vendor/ruby
 *.dump
+.jshintrc
 .sass-cache
