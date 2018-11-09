@@ -15,6 +15,6 @@ fi
 
 # Install homebrew packages
 brew install grc coreutils git chromedriver imagemagick python postgres the_silver_searcher hub
-brew install rbenv ruby-build
+brew install rbenv ruby-build asdf
 
 exit 0
