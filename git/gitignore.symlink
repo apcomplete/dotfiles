@@ -9,3 +9,5 @@ vendor/ruby
 *.dump
 .jshintrc
 .sass-cache
+assets/coverage
+*_local.exs
