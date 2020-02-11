@@ -1,90 +1,80 @@
-# import colors to named vars
-autoload colors
-if [[ "$terminfo[colors]" -gt 8 ]]; then
-    colors
-fi
-for COLOR in RED GREEN YELLOW BLUE MAGENTA CYAN BLACK WHITE; do
-    eval $COLOR='$fg_no_bold[${(L)COLOR}]'
-    eval BOLD_$COLOR='$fg_bold[${(L)COLOR}]'
-done
-eval RESET='$reset_color'
+autoload colors && colors
+# cheers, @ehrenmurdick
+# http://github.com/ehrenmurdick/config/blob/master/zsh/prompt.zsh
 
+if (( $+commands[git] ))
+then
+  git="$commands[git]"
+else
+  git="/usr/bin/git"
+fi
 
 git_branch() {
-  echo $(/usr/local/bin/git symbolic-ref HEAD 2>/dev/null | awk -F/ {'print $NF'})
+  echo $($git symbolic-ref HEAD 2>/dev/null | awk -F/ {'print $NF'})
 }
-
 
 git_dirty() {
-  st=$(/usr/local/bin/git status 2>/dev/null | tail -n 1)
-  if [[ $st == "" ]]
+  if $(! $git status -s &> /dev/null)
   then
     echo ""
   else
-    if [[ $st == "nothing to commit (working directory clean)" ]]
+    if [[ $($git status --porcelain) == "" ]]
     then
-      echo "%{$GREEN%}$(git_prompt_info)%{$RESET%}"
+      echo "%{$fg_bold[green]%}$(git_prompt_info)%{$reset_color%}"
     else
-      echo "%{$RED%}$(git_prompt_info)%{$RESET%}"
+      echo "%{$fg_bold[red]%}$(git_prompt_info)%{$reset_color%}"
     fi
   fi
 }
-
 
 git_prompt_info () {
-  ref=$(/usr/local/bin/git symbolic-ref HEAD 2>/dev/null) || return
-  echo "(${ref#refs/heads/})"
+ ref=$($git symbolic-ref HEAD 2>/dev/null) || return
+# echo "(%{\e[0;33m%}${ref#refs/heads/}%{\e[0m%})"
+ echo "${ref#refs/heads/}"
 }
 
-
-unpushed () {
-  /usr/local/bin/git cherry -v @{upstream} 2>/dev/null
-}
-
-
+# This assumes that you always have an origin named `origin`, and that you only
+# care about one specific origin. If this is not the case, you might want to use
+# `$git cherry -v @{upstream}` instead.
 need_push () {
-  if [[ $(unpushed) == "" ]]
+  if [ $($git rev-parse --is-inside-work-tree 2>/dev/null) ]
   then
-    echo " "
-  else
-    echo " %{$MAGENTA%}▲%{$RESET%}"
+    number=$($git cherry -v origin/$(git symbolic-ref --short HEAD) 2>/dev/null | wc -l | bc)
+
+    if [[ $number == 0 ]]
+    then
+      echo " "
+    else
+      echo " with %{$fg_bold[magenta]%}$number unpushed%{$reset_color%}"
+    fi
   fi
 }
-
 
 local_user(){
-  echo "%{$CYAN%}%n%{$RESET%}@%{$CYAN%}%m%{$RESET%}"
+  echo "%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[cyan]%}%m%{$RESET%}"
 }
 
-# This keeps the number of todos always available the right hand side of my
-# command line. I filter it to only count those tagged as "+next", so it's more
-# of a motivation to clear out the list.
-todo(){
-  if $(which todo.sh &> /dev/null)
+directory_name() {
+  echo "%{$fg[blue]%}%~%{$reset_color%}"
+}
+
+battery_status() {
+  if test ! "$(uname)" = "Darwin"
   then
-    num=$(echo $(td ls +next | wc -l))
-    let todos=num-2
-    if [ $todos != 0 ]
-    then
-      echo "$todos"
-    else
-      echo ""
-    fi
-  else
-    echo ""
+    exit 0
+  fi
+
+  if [[ $(sysctl -n hw.model) == *"Book"* ]]
+  then
+    $ZSH/bin/battery-status
   fi
 }
 
-
-directory_name(){
-  echo "%{$BLUE%}%~%{$RESET%}"
-}
-
-
-export PROMPT=$'\n[$(local_user):$(directory_name)] $(git_dirty)$(need_push)\n› '
+export PROMPT=$'\n[$(battery_status)$(local_user):$(directory_name)] $(git_dirty)$(need_push)\n› '
 set_prompt () {
-  export RPROMPT="%{$GREEN%}$(todo)%{$RESET%}"
+  export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 }
+
 precmd() {
   title "zsh" "%m" "%55<...<%~"
   set_prompt
