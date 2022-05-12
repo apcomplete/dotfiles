@@ -22,7 +22,7 @@ fi
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug load
 
 # use .localrc for SUPER SECRET CRAP that you don't
 # want in your public, versioned repo.
