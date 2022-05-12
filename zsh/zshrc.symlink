@@ -66,3 +66,5 @@ __git_files () {
 if [[ $TILIX_ID ]]; then
   source /etc/profile.d/vte.sh
 fi
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
