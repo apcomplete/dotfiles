@@ -4,10 +4,7 @@ export ZSH=$HOME/.dotfiles
 # your project folder that we can `c [tab]` to
 export PROJECTS=~/Projects
 
-if [[ "$(uname -s)" == "Linux" ]]
-then
-  source ~/.zplug/init.zsh
-
+source ~/.zplug/init.zsh
 # Make sure to use double quotes
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
@@ -18,7 +15,6 @@ if ! zplug check --verbose; then
   if read -q; then
     echo; zplug install
   fi
-fi
 fi
 
 # Then, source plugins and add commands to $PATH
