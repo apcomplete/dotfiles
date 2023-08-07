@@ -13,3 +13,4 @@ assets/coverage
 *_local.exs
 .projections.json
 .elixir-tools
+venv
