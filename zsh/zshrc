@@ -1,0 +1,102 @@
+# shortcut to this dotfiles path is $ZSH
+export ZSH=$HOME/dotfiles
+
+fpath=($ZSH/functions $fpath)
+
+# your project folder that we can `c [tab]` to
+
+source $HOME/.exports
+source $HOME/.aliases
+source $HOME/.profile
+
+# Load custom functions
+autoload -U $ZSH/functions/*(:t)
+
+source ~/.zplug/init.zsh
+# Make sure to use double quotes
+zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo; zplug install
+  fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load
+
+# use .localrc for SUPER SECRET CRAP that you don't
+# want in your public, versioned repo.
+if [[ -a ~/.localrc ]]
+then
+  source ~/.localrc
+fi
+
+# initialize autocomplete here, otherwise functions won't be loaded
+autoload -Uz compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+compinit
+
+__git_files () {
+    _wanted files expl 'local files' _files
+}
+
+if [[ $TILIX_ID ]]; then
+  source /etc/profile.d/vte-2.91.sh
+fi
+
+# load ASDF
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
+setopt NO_BG_NICE # don't nice background tasks
+setopt NO_HUP
+setopt NO_LIST_BEEP
+setopt LOCAL_OPTIONS # allow functions to have local options
+setopt LOCAL_TRAPS # allow functions to have local traps
+setopt HIST_VERIFY
+setopt SHARE_HISTORY # share history between sessions ???
+setopt EXTENDED_HISTORY # add timestamps to history
+setopt PROMPT_SUBST
+setopt CORRECT
+setopt COMPLETE_IN_WORD
+setopt IGNORE_EOF
+
+setopt APPEND_HISTORY # adds history
+setopt INC_APPEND_HISTORY SHARE_HISTORY  # adds history incrementally and share it across sessions
+setopt HIST_IGNORE_ALL_DUPS  # don't record dupes in history
+setopt HIST_REDUCE_BLANKS
+
+# don't expand aliases _before_ completion has finished
+#   like: git comm-[tab]
+setopt complete_aliases
+
+zle -N newtab
+
+bindkey -e
+bindkey ';3D' backward-word
+bindkey ';3C' forward-word
+bindkey '^[[5D' beginning-of-line
+bindkey '^[[5C' end-of-line
+bindkey '^[[3~' delete-char
+bindkey '^[^N' newtab
+bindkey '^?' backward-delete-char
+
+if [[ "$(uname -s)" == "Linux" ]]
+then
+  # ubuntu specific commands
+  bindkey "$terminfo[kcuu1]" history-substring-search-up
+  bindkey "$terminfo[kcud1]" history-substring-search-down
+else
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+fi
+
+

@@ -1,8 +1,0 @@
-alias reload!='. ~/.zshrc'
-alias rspec='nocorrect rspec'
-alias cap='nocorrect cap'
-alias gvim='mvim -p'
-alias ll='ls -alF'
-alias jest='nocorrect jest'
-alias dcu='devcontainer up --workspace-folder ./'
-alias dce='devcontainer exec --workspace-folder ./'
