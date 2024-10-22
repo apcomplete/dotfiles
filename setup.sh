@@ -134,7 +134,7 @@ mkdir -p "${HOME}/.vim/tmp"
 
 echo
 echo "Linking in other files"
-ln -s "$HOME/dotfiles/nvim" $XDG_CONFIG_HOME
+ln -sf "$HOME/dotfiles/nvim" "$XDG_CONFIG_HOME/nvim"
 ln -sf "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 
 # Create dot files to reference our dotfiles
