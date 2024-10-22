@@ -128,13 +128,15 @@ fi
 
 # Ensure directory exists
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:=${HOME}/.config}"
-mkdir -p "${XDG_CONFIG_HOME}/nvim"
 # Nvim is configured to use this directory for swap files
 mkdir -p "${HOME}/.vim/tmp"
 
+# Delete the neovim directory if it exists since we're just going to symlink the entire folder into .config
+rm -rf "${XDG_CONFIG_HOME}/nvim"
+
 echo
 echo "Linking in other files"
-ln -sf "$HOME/dotfiles/nvim" "$XDG_CONFIG_HOME/nvim"
+ln -sf "$HOME/dotfiles/nvim" $XDG_CONFIG_HOME
 ln -sf "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 
 # Create dot files to reference our dotfiles
