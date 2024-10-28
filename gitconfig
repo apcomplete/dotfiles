@@ -1,5 +1,5 @@
 [hub]
-  protocol = git
+	protocol = ssh
 [user]
   name = apcomplete
   email = padgett.alex@gmail.com

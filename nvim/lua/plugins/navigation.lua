@@ -13,11 +13,15 @@ return {
   },
   {
     'mileszs/ack.vim',
+    init = function()
+      vim.g.ackprg = 'rg --sort path --vimgrep --smart-case --no-heading'
+    end,
     config = function()
       vim.g.ackprg = 'rg --vimgrep --smart-case'
       vim.cmd('cnoreabbrev Ack Ack!')
-      vim.cmd('cnoreabbrev ack Ack!')
+      -- vim.cmd('cnoreabbrev ack Ack!')
       vim.opt.grepprg = 'rg --vimgrep --smart-case --hidden'
+      vim.o.grepprg = 'rg --vimgrep --smart-case --hidden'
     end
   },
   {
