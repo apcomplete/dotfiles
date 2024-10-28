@@ -55,6 +55,7 @@ echo "4. We'll try to change it if it's not"
 
 packages=(
   autoconf
+  bc
   build-essential
   curl
   git
@@ -88,6 +89,8 @@ update_packages
 install "${packages[@]}"
 
 check_default_shell
+
+export PATH=$PATH:~/.asdf/bin
 
 if [ ! -x "$(command -v asdf)" ]; then
   echo "Install asdf"

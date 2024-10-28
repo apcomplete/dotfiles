@@ -4,27 +4,20 @@ export XDG_CONFIG_HOME
 [[ -s "$HOME/.aliases" ]] && source "$HOME/.aliases"
 [[ -s "$HOME/.exports" ]] && source "$HOME/.exports"
 
-autoload colors && colors
+# autoload colors && colors
 # cheers, @ehrenmurdick
 # http://github.com/ehrenmurdick/config/blob/master/zsh/prompt.zsh
 
-if (( $+commands[git] ))
-then
-  git="$commands[git]"
-else
-  git="/usr/bin/git"
-fi
-
 git_branch() {
-  echo $($git symbolic-ref HEAD 2>/dev/null | awk -F/ {'print $NF'})
+  echo $(git symbolic-ref HEAD 2>/dev/null | awk -F/ {'print $NF'})
 }
 
 git_dirty() {
-  if $(! $git status -s &> /dev/null)
+  if $(! git status -s &> /dev/null)
   then
     echo ""
   else
-    if [[ $($git status --porcelain) == "" ]]
+    if [[ $(git status --porcelain) == "" ]]
     then
       echo "%{$fg_bold[green]%}$(git_prompt_info)%{$reset_color%}"
     else
@@ -34,18 +27,18 @@ git_dirty() {
 }
 
 git_prompt_info () {
- ref=$($git symbolic-ref HEAD 2>/dev/null) || return
+ ref=$(git symbolic-ref HEAD 2>/dev/null) || return
 # echo "(%{\e[0;33m%}${ref#refs/heads/}%{\e[0m%})"
  echo "${ref#refs/heads/}"
 }
 
 # This assumes that you always have an origin named `origin`, and that you only
 # care about one specific origin. If this is not the case, you might want to use
-# `$git cherry -v @{upstream}` instead.
+# `git cherry -v @{upstream}` instead.
 need_push () {
-  if [ $($git rev-parse --is-inside-work-tree 2>/dev/null) ]
+  if [ $(git rev-parse --is-inside-work-tree 2>/dev/null) ]
   then
-    number=$($git cherry -v origin/$(git symbolic-ref --short HEAD) 2>/dev/null | wc -l | bc)
+    number=$(git cherry -v origin/$(git symbolic-ref --short HEAD) 2>/dev/null | wc -l | bc)
 
     if [[ $number == 0 ]]
     then
@@ -92,9 +85,3 @@ function title() {
     ;;
   esac
 }
-
-# matches case insensitive for lowercase
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-# pasting with tabs doesn't perform completion
-zstyle ':completion:*' insert-tab pending
