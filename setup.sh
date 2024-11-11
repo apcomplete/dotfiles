@@ -56,7 +56,6 @@ echo "4. We'll try to change it if it's not"
 packages=(
   autoconf
   bc
-  build-essential
   curl
   git
   hub
@@ -86,7 +85,9 @@ packages=(
 
 update_packages
 
-install "${packages[@]}"
+for package in "${packages[@]}"; do
+  install "${package}"
+done
 
 check_default_shell
 
@@ -141,6 +142,7 @@ echo
 echo "Linking in other files"
 ln -sf "$HOME/dotfiles/nvim" $XDG_CONFIG_HOME
 ln -sf "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
+ln -sf "$HOME/dotfiles/gitignore" "$HOME/.gitignore"
 
 # Create dot files to reference our dotfiles
 echo "source $HOME/dotfiles/aliases.zsh" > "$HOME/.aliases"
