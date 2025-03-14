@@ -14,3 +14,4 @@ assets/coverage
 .projections.json
 .elixir-tools
 venv
+zenith_production.sql

@@ -10,7 +10,7 @@
   co = checkout
   count   = !git shortlog -sn
   assumed = !git ls-files -v | grep ^h | cut -c 3-
-  cleanup = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -n 1 git branch -d; }; f"
+  cleanup = "!f() { git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs -n 1 git branch -d; }; f"
 [color]
   interactive = auto
   ui = true
