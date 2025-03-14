@@ -11,10 +11,23 @@ return {
     end
   },
   {
-    'mhanberg/output-panel.nvim',
+    "mhanberg/output-panel.nvim",
+    version = "*",
+    event = "VeryLazy",
     config = function()
-      require('output_panel').setup()
-    end
+      require("output_panel").setup({
+        max_buffer_size = 5000 -- default
+      })
+    end,
+    cmd = { "OutputPanel" },
+    keys = {
+      {
+        "<leader>o",
+        vim.cmd.OutputPanel,
+        mode = "n",
+        desc = "Toggle the output panel",
+      },
+    }
   },
   {
     'nvim-lualine/lualine.nvim',

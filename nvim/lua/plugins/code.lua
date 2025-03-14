@@ -8,5 +8,6 @@ return {
       require("blame").setup()
       vim.api.nvim_set_keymap('', '<Leader>gb', ':BlameToggle<CR>', { noremap = true })
     end
-  }
+  },
+  'folke/ts-comments.nvim',
 }

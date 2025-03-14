@@ -8,10 +8,11 @@ end
 
 return {
   {
-    'L3MON4D3/LuaSnip',
-    config = function()
-      require('luasnip.loaders.from_vscode').lazy_load({ paths = './snippets' })
-    end
+    "L3MON4D3/LuaSnip",
+    -- follow latest release.
+    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    build = "make install_jsregexp"
   },
   'rafamadriz/friendly-snippets', -- language specific snippets
 
@@ -40,7 +41,7 @@ return {
           end
         },
         sources = {
-          -- { name = 'copilot' },
+          { name = 'copilot' },
           { name = 'path' },
           { name = 'nvim_lsp', keyword_length = 3 },
           { name = 'buffer',   keyword_length = 3 },
