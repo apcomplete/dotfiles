@@ -150,6 +150,7 @@ echo "source $HOME/dotfiles/exports.zsh" > "$HOME/.exports"
 echo "source $HOME/dotfiles/profile.zsh" > "$HOME/.profile"
 
 echo "source $HOME/dotfiles/zsh/zshrc" > "$HOME/.zshrc"
+echo "source-file $HOME/dotfiles/tmux/tmux.conf" >"$HOME/.tmux.conf"
 
 echo
 echo "Please log out and log back in for default shell to be initialized."
