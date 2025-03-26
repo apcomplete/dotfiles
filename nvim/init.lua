@@ -14,6 +14,18 @@ vim.opt.rtp:prepend(lazypath)
 -- Use comma as leader
 vim.g.mapleader = ","
 
+vim.g.clipboard = {
+  name = 'OSC 52',
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+  },
+  paste = {
+    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+  },
+}
+
 vim.opt.guifont = "Inconsolata Nerd Font Regular:h12"
 vim.opt.encoding = "utf-8" -- Use UTF-8 everywhere.
 vim.cmd("colorscheme railscasts")
