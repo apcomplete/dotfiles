@@ -15,14 +15,14 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = ","
 
 vim.g.clipboard = {
-  name = 'OSC 52',
+  name = "OSC 52",
   copy = {
-    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
   },
   paste = {
-    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-    ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+    ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
   },
 }
 
@@ -37,7 +37,7 @@ vim.g.loaded_netrwPlugin = 1
 
 require("lazy").setup({
   spec = {
-    { import = "plugins" }
+    { import = "plugins" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
@@ -45,12 +45,13 @@ require("lazy").setup({
     lazy = false,
     -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
     -- have outdated releases, which may break your Neovim install.
-     version = "*", -- try installing the latest stable version for plugins that support semver
+    version = "*",              -- try installing the latest stable version for plugins that support semver
   },
   checker = { enabled = false }, -- automatically check for plugin updates
 })
 
 require("mappings")
+require("lsp")
 
 vim.opt.shell = "/bin/zsh"
 
@@ -152,7 +153,30 @@ vim.api.nvim_set_hl(0, "Pmenu", { link = "Normal" })
 
 -- Use internal formatting for bindings like gq. null-ls or neovim messes this up somehow
 vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    vim.bo[args.buf].formatexpr = nil
+  group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
+  callback = function(ev, bufopts)
+    vim.bo[ev.buf].formatexpr = nil
+    vim.lsp.completion.enable(true, ev.data.client_id, ev.buf)
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
+    vim.keymap.set("n", "<C-]>", vim.lsp.buf.definition, bufopts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
+    vim.keymap.set("n", "<LEADER>wa", vim.lsp.buf.add_workspace_folder, bufopts)
+    vim.keymap.set("n", "<LEADER>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
+    vim.keymap.set("n", "<LEADER>wl", function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, bufopts)
+    vim.keymap.set("n", "<LEADER>D", vim.lsp.buf.type_definition, bufopts)
+    vim.keymap.set("n", "<LEADER>rn", vim.lsp.buf.rename, bufopts)
+    vim.keymap.set("n", "<LEADER>ca", vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
+    vim.keymap.set("n", "<LEADER>p", function()
+      vim.lsp.buf.format({ async = true })
+    end, bufopts)
+    -- run the codelens under the cursor
+    vim.keymap.set("n", "<leader>r", vim.lsp.codelens.run, bufopts)
+    vim.lsp.inlay_hint.enable(true, bufopts)
   end,
 })

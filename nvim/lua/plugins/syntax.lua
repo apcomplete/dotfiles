@@ -1,6 +1,6 @@
 return {
   {
-    'jose-elias-alvarez/null-ls.nvim',
+    'nvimtools/none-ls.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'lukas-reineke/lsp-format.nvim',
@@ -85,9 +85,9 @@ return {
           b.formatting.stylua,
 
           -- python
-          b.diagnostics.flake8.with({extra_args = {"--max-line-length","120"}}),
+          -- b.diagnostics.flake8.with({extra_args = {"--max-line-length","120"}}),
           --b.formatting.autoflake,
-          b.formatting.black,
+          -- b.formatting.black,
           --b.formatting.autopep8,
           --b.diagnostics.pylint,
         },
