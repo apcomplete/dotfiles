@@ -15,3 +15,4 @@ assets/coverage
 .elixir-tools
 venv
 zenith_production.sql
+*.sql
