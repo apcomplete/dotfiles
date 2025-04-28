@@ -16,3 +16,4 @@ assets/coverage
 venv
 zenith_production.sql
 *.sql
+priv/cldr/*

@@ -6,7 +6,7 @@ NPM_PATH=./node_modules/.bin:$HOME/.npm-packages/bin:/usr/local/share/npm/bin
 
 LOCAL_PATH=/usr/local/bin:/usr/local/sbin
 
-NVIM_PATH="$PATH:/opt/nvim-linux64/bin"
+NVIM_PATH=~/.local/share/nvim/mason/bin
 
 export PATH=$RUBY_PATH:$NVIM_PATH:$NPM_PATH:$BIN_PATH:$LOCAL_PATH:$HOME/.local/bin:$PATH
 

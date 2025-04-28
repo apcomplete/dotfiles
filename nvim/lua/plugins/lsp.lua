@@ -1,48 +1,39 @@
 return {
+  'williamboman/mason.nvim',
   {
-    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig.nvim',
     config = function()
       require('mason').setup()
-    end
-  },
-  {
-    "elixir-tools/elixir-tools.nvim",
-    version = "*",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      local elixir = require("elixir")
-      local elixirls = require("elixir.elixirls")
-
-      elixir.setup {
-        nextls = { enable = false },
-        elixirls = {
-          enable = true,
-          tag = "v0.27.2",
-          settings = elixirls.settings {
-            dialyzerEnabled = false,
-            enableTestLenses = false,
-          },
-          on_attach = function(client, bufnr)
-            vim.keymap.set("n", "<LEADER>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
-            vim.keymap.set("n", "<LEADER>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
-            vim.keymap.set("v", "<LEADER>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
-          end,
+      require('mason-lspconfig').setup({
+        ensure_installed = {
+          'bashls',
+          'cssls',
+          'dockerls',
+          'eslint',
+          'elixirls',
+          'html',
+          'jsonls',
+          'lua_ls',
+          'marksman', -- markdown
+          'nextls',
+          'sqlls',
         },
-        projectionist = {
-          enable = true
-        }
-      }
-    end,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
+        automatic_installation = true,
+      })
+    end
   },
   {
     'neovim/nvim-lspconfig',
     config = function()
       local lspconfig = require('lspconfig')
 
-      lspconfig.lua_ls.setup({
+      vim.lsp.config('html', {})
+
+      vim.lsp.config('elixirls', {
+        cmd = { 'elixir-ls' }
+      })
+
+      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             diagnostics = {
@@ -60,6 +51,8 @@ return {
           },
         }
       })
+
+      vim.lsp.enable('elixirls')
 
       -- Use internal formatting for bindings like gq. null-ls or neovim messes this up somehow
       vim.api.nvim_create_autocmd("LspAttach", {
