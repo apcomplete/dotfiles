@@ -1,3 +1,34 @@
+local M = {}
+
+local get_cursor_position = function()
+  local rowcol = vim.api.nvim_win_get_cursor(0)
+  local row = rowcol[1] - 1
+  local col = rowcol[2]
+
+  return row, col
+end
+
+local manipulate_pipes = function(direction, client)
+  local row, col = get_cursor_position()
+
+  client.request_sync("workspace/executeCommand", {
+    command = "manipulatePipes:serverid",
+    arguments = { direction, "file://" .. vim.api.nvim_buf_get_name(0), row, col },
+  }, nil, 0)
+end
+
+function M.from_pipe(client)
+  return function()
+    manipulate_pipes("fromPipe", client)
+  end
+end
+
+function M.to_pipe(client)
+  return function()
+    manipulate_pipes("toPipe", client)
+  end
+end
+
 return {
   'williamboman/mason.nvim',
   {
@@ -25,12 +56,14 @@ return {
   {
     'neovim/nvim-lspconfig',
     config = function()
-      local lspconfig = require('lspconfig')
-
       vim.lsp.config('html', {})
 
       vim.lsp.config('elixirls', {
         cmd = { 'elixir-ls' }
+      })
+
+      vim.lsp.config('nextls', {
+        cmd = { 'nextls', '--stdio' }
       })
 
       vim.lsp.config('lua_ls', {
@@ -53,13 +86,24 @@ return {
       })
 
       vim.lsp.enable('elixirls')
+      vim.lsp.enable('nextls')
+      vim.lsp.enable('lua_ls')
 
       -- Use internal formatting for bindings like gq. null-ls or neovim messes this up somehow
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
         callback = function(ev, bufopts)
+          local bufnr = vim.api.nvim_get_current_buf()
+          local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+          vim.api.nvim_buf_create_user_command(bufnr, "ElixirFromPipe", M.from_pipe(client), {})
+          vim.api.nvim_buf_create_user_command(bufnr, "ElixirToPipe", M.to_pipe(client), {})
+
           vim.bo[ev.buf].formatexpr = nil
           vim.lsp.completion.enable(true, ev.data.client_id, ev.buf)
+          vim.keymap.set("n", "<leader>fp", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
+          vim.keymap.set("n", "<leader>tp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
+          vim.keymap.set("v", "<leader>em", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
           vim.keymap.set("n", "<C-]>", vim.lsp.buf.definition, bufopts)
