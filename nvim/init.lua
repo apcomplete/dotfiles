@@ -130,8 +130,6 @@ vim.opt.foldmethod = "manual" -- I don't always fold code, but when I do, I do i
 -- Show Git diff in window split when committing
 vim.cmd("au FileType gitcommit DiffGitCached | wincmd L | wincmd p")
 
-vim.lsp.set_log_level('info')
-
 vim.api.nvim_set_hl(0, "@tag", { link = "xmlTagName" })
 vim.api.nvim_set_hl(0, "@tag.attribute", { link = "Type" })
 vim.api.nvim_set_hl(0, "@parameter.tsx", { link = "PreProc" })
