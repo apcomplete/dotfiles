@@ -109,20 +109,8 @@ asdf_plugins=(
 )
 for package in "${asdf_plugins[@]}"; do
   asdf plugin add "${package}"
-  asdf install "${package}" latest
-  asdf global "${package}" latest
   echo
 done
-
-# echo "Install neovim"
-# if [[ "$OSTYPE" == "linux-gnu"* ]];
-# then
-#   curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-#   sudo rm -rf /opt/nvim
-#   sudo tar -C /opt -xzf nvim-linux64.tar.gz
-#   rm nvim-linux64.tar.gz
-# fi
-
 
 echo "Install zplug"
 echo
