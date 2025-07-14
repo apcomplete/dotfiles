@@ -128,7 +128,7 @@ rm -rf "${XDG_CONFIG_HOME}/nvim"
 
 echo
 echo "Linking in other files"
-ln -sf "$HOME/dotfiles/nvim" $XDG_CONFIG_HOME
+ln -s "$HOME/dotfiles/nvim" $XDG_CONFIG_HOME/nvim
 ln -sf "$HOME/dotfiles/gitconfig" "$HOME/.gitconfig"
 ln -sf "$HOME/dotfiles/gitignore" "$HOME/.gitignore"
 
