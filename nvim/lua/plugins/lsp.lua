@@ -18,41 +18,40 @@ local manipulate_pipes = function(direction)
 end
 
 return {
-  'williamboman/mason.nvim',
+  'mason-org/mason.nvim',
   {
-    'williamboman/mason-lspconfig.nvim',
-    config = function()
-      require('mason').setup()
-      require('mason-lspconfig').setup({
-        ensure_installed = {
-          'bashls',
-          'cssls',
-          'dockerls',
-          'eslint',
-          'elixirls',
-          'html',
-          'jsonls',
-          'lua_ls',
-          'marksman', -- markdown
-          'nextls',
-          'sqlls',
-        },
-        automatic_installation = true,
-      })
-    end
+    'mason-org/mason-lspconfig.nvim',
+    opts = {
+      ensure_installed = {
+        'bashls',
+        'cssls',
+        'dockerls',
+        'eslint',
+        'expert',
+        'html',
+        'jsonls',
+        'lua_ls',
+        'marksman', -- markdown
+        'sqlls',
+      },
+      automatic_installation = true,
+      automatic_enable = true
+    },
+    dependencies = {
+      { 'mason-org/mason.nvim', opts = {} },
+      'neovim/nvim-lspconfig',
+    },
   },
   {
     'neovim/nvim-lspconfig',
     config = function()
+      vim.lsp.config('expert', {
+        cmd = { 'expert' },
+        root_markers = { 'mix.exs', '.git' },
+        filetypes = { 'elixir', 'eelixir', 'heex' },
+      })
+
       vim.lsp.config('html', {})
-
-      vim.lsp.config('elixirls', {
-        cmd = { 'elixir-ls' }
-      })
-
-      vim.lsp.config('nextls', {
-        cmd = { 'nextls', '--stdio' }
-      })
 
       vim.lsp.config('lua_ls', {
         settings = {
@@ -72,10 +71,6 @@ return {
           },
         }
       })
-
-      vim.lsp.enable('elixirls')
-      -- vim.lsp.enable('nextls')
-      vim.lsp.enable('lua_ls')
 
       -- Use internal formatting for bindings like gq. null-ls or neovim messes this up somehow
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -109,5 +104,18 @@ return {
         end,
       })
     end
+  },
+  {
+    'stevearc/conform.nvim',
+    opts = {
+      formatters_by_ft = {
+        javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+      format_on_save = {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_format = "fallback",
+      },
+    }
   }
 }

@@ -17,3 +17,5 @@ venv
 zenith_production.sql
 *.sql
 priv/cldr/*
+assets/.prettierrc
+Claude.local.md
