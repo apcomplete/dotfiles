@@ -3,12 +3,12 @@ return {
     'CopilotC-Nvim/CopilotChat.nvim',
     branch = 'canary',
     dependencies = {
-      { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
-      { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
+      { 'zbirenbaum/copilot.lua' },   -- or github/copilot.vim
+      { 'nvim-lua/plenary.nvim' },    -- for curl, log wrapper
     },
-    build = 'make tiktoken',      -- Only on MacOS or Linux
+    build = 'make tiktoken',          -- Only on MacOS or Linux
     opts = {
-      debug = true,               -- Enable debugging
+      debug = true,                   -- Enable debugging
       -- See Configuration section for rest
       question_header = '  ' .. vim.env.USER .. ' ',
       answer_header = '  Copilot ',
@@ -22,10 +22,10 @@ return {
       -- Enhance the UI
       window = {
         layout = 'float',
-        relative = 'editor', -- Change to editor for consistent positioning
+        relative = 'editor',   -- Change to editor for consistent positioning
         width = 0.8,
         height = 0.8,
-        border = 'rounded', -- Add rounded borders
+        border = 'rounded',   -- Add rounded borders
         win_options = {
           winhighlight = 'Normal:Normal,FloatBorder:FloatBorder',
         },
@@ -137,7 +137,7 @@ return {
           python = true,
           ['.'] = false,
         },
-        copilot_node_command = 'node', -- Node.js version must be > 18.x
+        copilot_node_command = 'node',   -- Node.js version must be > 18.x
         server_opts_overrides = {},
       })
     end
