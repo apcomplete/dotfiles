@@ -27,7 +27,7 @@ return {
         'cssls',
         'dockerls',
         'eslint',
-        'elixir-ls',
+        'elixirls',
         'expert',
         'html',
         'jsonls',
